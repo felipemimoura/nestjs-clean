@@ -10,6 +10,15 @@ describe('User validator unit test', () => {
   beforeEach(() => {
     sut = UserValidatorFactory.create()
   })
+  it('valid case for user validator class', () => {
+    const props = UserDataBuilder({})
+
+    const isValid = sut.validate(props)
+
+    expect(isValid).toBeTruthy()
+    expect(sut.validatedDate).toStrictEqual(new UserRules(props))
+  })
+
   describe('name field', () => {
     it('Invalidation cases for name field', () => {
       let isValid = sut.validate(null as any)
@@ -44,14 +53,46 @@ describe('User validator unit test', () => {
         'name must be shorter than or equal to 255 characters',
       ])
     })
+  })
+  describe('email field', () => {
+    it('Invalidation cases for email field', () => {
+      let isValid = sut.validate(null as any)
 
-    it('valid case for name field', () => {
-      const props = UserDataBuilder({})
+      expect(isValid).toBeFalsy()
+      expect(sut.errors['email']).toStrictEqual([
+        'email must be an email',
+        'email should not be empty',
+        'email must be a string',
+        'email must be shorter than or equal to 255 characters',
+      ])
 
-      const isValid = sut.validate(props)
+      isValid = sut.validate({ ...UserDataBuilder({}), email: '' as any })
 
-      expect(isValid).toBeTruthy()
-      expect(sut.validatedDate).toStrictEqual(new UserRules(props))
+      expect(isValid).toBeFalsy()
+      expect(sut.errors['email']).toStrictEqual([
+        'email must be an email',
+        'email should not be empty',
+      ])
+
+      isValid = sut.validate({ ...UserDataBuilder({}), email: 1 as any })
+
+      expect(isValid).toBeFalsy()
+      expect(sut.errors['email']).toStrictEqual([
+        'email must be an email',
+        'email must be a string',
+        'email must be shorter than or equal to 255 characters',
+      ])
+
+      isValid = sut.validate({
+        ...UserDataBuilder({}),
+        email: 'a'.repeat(256),
+      })
+
+      expect(isValid).toBeFalsy()
+      expect(sut.errors['email']).toStrictEqual([
+        'email must be an email',
+        'email must be shorter than or equal to 255 characters',
+      ])
     })
   })
 })
