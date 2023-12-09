@@ -109,7 +109,6 @@ describe('User validator unit test', () => {
       isValid = sut.validate({ ...UserDataBuilder({}), password: '' as any })
 
       expect(isValid).toBeFalsy()
-      console.log(sut.errors['password'])
       expect(sut.errors['password']).toStrictEqual([
         'password should not be empty',
       ])
