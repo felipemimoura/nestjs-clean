@@ -6,13 +6,13 @@ import {
 } from '../../user.validator'
 
 let sut: UserValidator
+let props = UserDataBuilder({})
 describe('User validator unit test', () => {
   beforeEach(() => {
     sut = UserValidatorFactory.create()
+    props = UserDataBuilder({})
   })
   it('valid case for user validator class', () => {
-    const props = UserDataBuilder({})
-
     const isValid = sut.validate(props)
 
     expect(isValid).toBeTruthy()
@@ -130,6 +130,23 @@ describe('User validator unit test', () => {
       expect(isValid).toBeFalsy()
       expect(sut.errors['password']).toStrictEqual([
         'password must be shorter than or equal to 100 characters',
+      ])
+    })
+  })
+  describe('CreateAt field', () => {
+    it('Invalidation cases for password field', () => {
+      let isValid = sut.validate({ ...props, createdAt: 10 } as any)
+
+      expect(isValid).toBeFalsy()
+      expect(sut.errors['createdAt']).toStrictEqual([
+        'createdAt must be a Date instance',
+      ])
+
+      isValid = sut.validate({ ...props, createdAt: '2023' as any })
+
+      expect(isValid).toBeFalsy()
+      expect(sut.errors['createdAt']).toStrictEqual([
+        'createdAt must be a Date instance',
       ])
     })
   })
