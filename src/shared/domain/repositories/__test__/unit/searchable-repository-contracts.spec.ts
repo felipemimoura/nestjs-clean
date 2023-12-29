@@ -128,5 +128,194 @@ describe('Searchable repository', () => {
         )
       })
     })
+    it('sort Prop', () => {
+      const sut = new SearchParams()
+
+      expect(sut.sort).toBeNull()
+
+      const params = [
+        {
+          sort: null as any,
+          expected: null,
+        },
+        {
+          sort: undefined as any,
+          expected: null,
+        },
+        {
+          sort: '' as any,
+          expected: null,
+        },
+        {
+          sort: 'teste',
+          expected: 'teste',
+        },
+        {
+          sort: 0 as any,
+          expected: '0',
+        },
+        {
+          sort: -1 as any,
+          expected: '-1',
+        },
+        {
+          sort: 5.5 as any,
+          expected: '5.5',
+        },
+        {
+          sort: true as any,
+          expected: 'true',
+        },
+        {
+          sort: false,
+          expected: 'false',
+        },
+        {
+          sort: {},
+          expected: '[object Object]',
+        },
+        {
+          sort: 1,
+          expected: '1',
+        },
+        {
+          sort: 2,
+          expected: '2',
+        },
+        {
+          sort: 25,
+          expected: '25',
+        },
+      ]
+
+      params.forEach(param => {
+        expect(new SearchParams({ sort: param.sort }).sort).toBe(param.expected)
+      })
+    })
+    it('sortDir Prop', () => {
+      let sut = new SearchParams()
+
+      expect(sut.sortDir).toBeNull()
+
+      sut = new SearchParams({ sort: null })
+      expect(sut.sortDir).toBeNull()
+
+      sut = new SearchParams({ sort: undefined })
+      expect(sut.sortDir).toBeNull()
+
+      sut = new SearchParams({ sort: '' })
+      expect(sut.sortDir).toBeNull()
+
+      const params = [
+        {
+          sortDir: null as any,
+          expected: 'desc',
+        },
+        {
+          sortDir: undefined as any,
+          expected: 'desc',
+        },
+        {
+          sortDir: '' as any,
+          expected: 'desc',
+        },
+        {
+          sortDir: 'teste',
+          expected: 'desc',
+        },
+        {
+          sortDir: 0 as any,
+          expected: 'desc',
+        },
+        {
+          sortDir: 'asc' as any,
+          expected: 'asc',
+        },
+        {
+          sortDir: 'desc',
+          expected: 'desc',
+        },
+        {
+          sortDir: 'ASC',
+          expected: 'asc',
+        },
+        {
+          sortDir: 'DESC',
+          expected: 'desc',
+        },
+      ]
+
+      params.forEach(param => {
+        expect(
+          new SearchParams({ sort: 'field', sortDir: param.sortDir }).sortDir,
+        ).toBe(param.expected)
+      })
+    })
+    it('filter Prop', () => {
+      const sut = new SearchParams()
+
+      expect(sut.filter).toBeNull()
+
+      const params = [
+        {
+          filter: null as any,
+          expected: null,
+        },
+        {
+          filter: undefined as any,
+          expected: null,
+        },
+        {
+          filter: '' as any,
+          expected: null,
+        },
+        {
+          filter: 'teste',
+          expected: 'teste',
+        },
+        {
+          filter: 0 as any,
+          expected: '0',
+        },
+        {
+          filter: -1 as any,
+          expected: '-1',
+        },
+        {
+          filter: 5.5 as any,
+          expected: '5.5',
+        },
+        {
+          filter: true as any,
+          expected: 'true',
+        },
+        {
+          filter: false,
+          expected: 'false',
+        },
+        {
+          filter: {},
+          expected: '[object Object]',
+        },
+        {
+          filter: 1,
+          expected: '1',
+        },
+        {
+          filter: 2,
+          expected: '2',
+        },
+        {
+          filter: 25,
+          expected: '25',
+        },
+      ]
+
+      params.forEach(param => {
+        expect(new SearchParams({ filter: param.filter }).filter).toBe(
+          param.expected,
+        )
+      })
+    })
   })
 })
