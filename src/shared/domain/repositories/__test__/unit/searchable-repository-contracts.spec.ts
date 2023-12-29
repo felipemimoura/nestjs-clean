@@ -1,4 +1,7 @@
-import { SearchParams } from '../../searchable-repository-contracts'
+import {
+  SearchParams,
+  SearchResult,
+} from '../../searchable-repository-contracts'
 
 describe('Searchable repository', () => {
   describe('SearchParams test', () => {
@@ -316,6 +319,76 @@ describe('Searchable repository', () => {
           param.expected,
         )
       })
+    })
+  })
+
+  describe('SearchResult test', () => {
+    it('constructor props', () => {
+      let sut = new SearchResult({
+        items: ['teste1', 'teste2', 'teste3', 'teste4'] as any,
+        total: 4,
+        currentPage: 1,
+        perPage: 2,
+        sort: null,
+        sortDir: null,
+        filter: null,
+      })
+
+      expect(sut.toJson()).toStrictEqual({
+        items: ['teste1', 'teste2', 'teste3', 'teste4'] as any,
+        total: 4,
+        currentPage: 1,
+        perPage: 2,
+        lastPage: 2,
+        sort: null,
+        sortDir: null,
+        filter: null,
+      })
+
+      sut = new SearchResult({
+        items: ['teste1', 'teste2', 'teste3', 'teste4'] as any,
+        total: 4,
+        currentPage: 1,
+        perPage: 2,
+        sort: 'name',
+        sortDir: 'asc',
+        filter: 'test',
+      })
+
+      expect(sut.toJson()).toStrictEqual({
+        items: ['teste1', 'teste2', 'teste3', 'teste4'] as any,
+        total: 4,
+        currentPage: 1,
+        perPage: 2,
+        lastPage: 2,
+        sort: 'name',
+        sortDir: 'asc',
+        filter: 'test',
+      })
+
+      sut = new SearchResult({
+        items: ['teste1', 'teste2', 'teste3', 'teste4'] as any,
+        total: 4,
+        currentPage: 1,
+        perPage: 10,
+        sort: 'name',
+        sortDir: 'asc',
+        filter: 'test',
+      })
+
+      expect(sut.lastPage).toBe(1)
+
+      sut = new SearchResult({
+        items: ['teste1', 'teste2', 'teste3', 'teste4'] as any,
+        total: 54,
+        currentPage: 1,
+        perPage: 10,
+        sort: 'name',
+        sortDir: 'asc',
+        filter: 'test',
+      })
+
+      expect(sut.lastPage).toBe(6)
     })
   })
 })
