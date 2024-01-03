@@ -1,18 +1,12 @@
 import { UserRepository } from '@/users/domain/repositories/user.repository'
-import { en } from '@faker-js/faker'
+import { UserOutput } from '../dtos/user-output'
 
 export namespace GetUserUseCase {
   export type Input = {
     id: string
   }
 
-  export type Output = {
-    id: string
-    name: string
-    email: string
-    password: string
-    createdAt: Date
-  }
+  export type Output = UserOutput
 
   export class UseCase {
     constructor(private userRepository: UserRepository.Repository) {}
