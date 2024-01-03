@@ -26,7 +26,7 @@ export namespace SingUpUseCase {
 
     async execute(input: Input): Promise<Output> {
       const { email, name, password } = input
-      if (!email || name || password) {
+      if (!email || !name || !password) {
         throw new BadRequestError('Input data not provided')
       }
       await this.userRepository.emailExists(email)
