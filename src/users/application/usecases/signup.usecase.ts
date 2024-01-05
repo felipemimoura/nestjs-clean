@@ -25,7 +25,8 @@ export namespace SingUpUseCase {
       if (!email || !name || !password) {
         throw new BadRequestError('Input data not provided')
       }
-      await this.userRepository.emailExists(email)
+      console.log(this.userRepository)
+      await this.userRepository.emailExists(input.email)
 
       const hashPassword = await this.hashProvider.generateHash(password)
 
