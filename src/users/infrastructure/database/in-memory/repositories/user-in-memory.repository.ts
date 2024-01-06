@@ -20,7 +20,6 @@ export class UserInMemoryRepository
   }
 
   async emailExists(email: string): Promise<void> {
-    console.log('aqui', email)
     const entity = this.items.find(item => item.email === email)
 
     if (entity) {

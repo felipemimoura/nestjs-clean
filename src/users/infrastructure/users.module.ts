@@ -25,7 +25,6 @@ import { DeleteUserUseCase } from '../application/usecases/deleteUser.usecase'
     },
     {
       provide: SingUpUseCase.UseCase,
-      useClass: SingUpUseCase.UseCase,
       useFactory: (
         userRepository: UserRepository.Repository,
         hashProvider: HashProvider,
@@ -36,7 +35,6 @@ import { DeleteUserUseCase } from '../application/usecases/deleteUser.usecase'
     },
     {
       provide: SingInUseCase.UseCase,
-      useClass: SingInUseCase.UseCase,
       useFactory: (
         userRepository: UserRepository.Repository,
         hashProvider: HashProvider,
@@ -47,7 +45,6 @@ import { DeleteUserUseCase } from '../application/usecases/deleteUser.usecase'
     },
     {
       provide: GetUserUseCase.UseCase,
-      useClass: GetUserUseCase.UseCase,
       useFactory: (userRepository: UserRepository.Repository) => {
         return new GetUserUseCase.UseCase(userRepository)
       },
@@ -55,7 +52,6 @@ import { DeleteUserUseCase } from '../application/usecases/deleteUser.usecase'
     },
     {
       provide: ListUserUseCase.UseCase,
-      useClass: ListUserUseCase.UseCase,
       useFactory: (userRepository: UserRepository.Repository) => {
         return new ListUserUseCase.UseCase(userRepository)
       },
@@ -63,7 +59,6 @@ import { DeleteUserUseCase } from '../application/usecases/deleteUser.usecase'
     },
     {
       provide: UpdateUserUseCase.UseCase,
-      useClass: UpdateUserUseCase.UseCase,
       useFactory: (userRepository: UserRepository.Repository) => {
         return new UpdateUserUseCase.UseCase(userRepository)
       },
@@ -71,7 +66,6 @@ import { DeleteUserUseCase } from '../application/usecases/deleteUser.usecase'
     },
     {
       provide: UpdateUserPasswordUseCase.UseCase,
-      useClass: UpdateUserPasswordUseCase.UseCase,
       useFactory: (
         userRepository: UserRepository.Repository,
         hashProvider: HashProvider,
@@ -85,7 +79,6 @@ import { DeleteUserUseCase } from '../application/usecases/deleteUser.usecase'
     },
     {
       provide: DeleteUserUseCase.UseCase,
-      useClass: DeleteUserUseCase.UseCase,
       useFactory: (userRepository: UserRepository.Repository) => {
         return new DeleteUserUseCase.UseCase(userRepository)
       },
