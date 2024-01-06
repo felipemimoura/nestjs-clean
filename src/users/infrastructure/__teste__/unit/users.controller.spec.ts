@@ -1,8 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing'
-import { UsersController } from '../../users.controller'
 import { UserOutput } from '@/users/application/dtos/user-output'
 import { SingUpUseCase } from '@/users/application/usecases/signup.usecase'
 import { SingUpDto } from '../../dtos/singUp.dto'
+import { UsersController } from '../../users.controller'
+import { SingInUseCase } from '@/users/application/usecases/signIn.usecase'
+import { SingInDto } from '../../dtos/singIn.dto'
 
 describe('UsersController unit test', () => {
   let sut: UsersController
@@ -41,5 +42,22 @@ describe('UsersController unit test', () => {
     const result = await sut.create(input)
     expect(output).toMatchObject(result)
     expect(mockSingUpUserCase.execute).toHaveBeenCalledWith(input)
+  })
+  it('should be authenticate a user', async () => {
+    const output: SingInUseCase.Output = props
+    const mockSingInUserCase = {
+      execute: jest.fn().mockReturnValue(Promise.resolve(output)),
+    }
+
+    sut['singInUseCase'] = mockSingInUserCase as any
+
+    const input: SingInDto = {
+      email: 'johdoe@example.com',
+      password: 'password',
+    }
+
+    const result = await sut.login(input)
+    expect(output).toMatchObject(result)
+    expect(mockSingInUserCase.execute).toHaveBeenCalledWith(input)
   })
 })
