@@ -1,23 +1,27 @@
-import { Module } from '@nestjs/common'
-import { UsersController } from './users.controller'
-import { SingUpUseCase } from '../application/usecases/signup.usecase'
-import { UserInMemoryRepository } from './database/in-memory/repositories/user-in-memory.repository'
-import { BcryptjsHashProvider } from './providers/hash-provider/bcryptjs-hash-provider'
-import { UserRepository } from '../domain/repositories/user.repository'
 import { HashProvider } from '@/shared/application/providers/hash-provider'
-import { SingInUseCase } from '../application/usecases/signIn.usecase'
+import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service'
+import { Module } from '@nestjs/common'
+import { DeleteUserUseCase } from '../application/usecases/deleteUser.usecase'
 import { GetUserUseCase } from '../application/usecases/getUser.usecase'
 import { ListUserUseCase } from '../application/usecases/listUser.usecase'
+import { SingInUseCase } from '../application/usecases/signIn.usecase'
+import { SingUpUseCase } from '../application/usecases/signup.usecase'
 import { UpdateUserUseCase } from '../application/usecases/updateUser.usecase'
 import { UpdateUserPasswordUseCase } from '../application/usecases/updateUserPassword.usecase'
-import { DeleteUserUseCase } from '../application/usecases/deleteUser.usecase'
+import { UserRepository } from '../domain/repositories/user.repository'
+import { UserPrismaRepository } from './database/prisma/repostitories/user-prisma.repository'
+import { BcryptjsHashProvider } from './providers/hash-provider/bcryptjs-hash-provider'
+import { UsersController } from './users.controller'
 
 @Module({
   controllers: [UsersController],
   providers: [
+    { provide: 'PrismaService', useClass: PrismaService },
     {
       provide: 'UserRepository',
-      useClass: UserInMemoryRepository,
+      useFactory: (prismaService: PrismaService) => {
+        return new UserPrismaRepository(prismaService)
+      },
     },
     {
       provide: 'HashProvider',
