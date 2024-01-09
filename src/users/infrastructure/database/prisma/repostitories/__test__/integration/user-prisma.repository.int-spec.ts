@@ -7,6 +7,7 @@ import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 import { Entity } from '@/shared/domain/entities/entity'
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
 import { UserEntity } from '@/users/domain/entities/user.entity'
+import { UserRepository } from '@/users/domain/repositories/user.repository'
 
 describe('UserPrismaRepository integration test', () => {
   const prismaService = new PrismaClient()
@@ -64,5 +65,36 @@ describe('UserPrismaRepository integration test', () => {
     expect(JSON.stringify(entities)).toBe(JSON.stringify([entity]))
 
     entities.map(item => expect(item.toJSON()).toStrictEqual(entity.toJSON()))
+  })
+
+  describe('SearchMethod test', () => {
+    it('Should apply only pagination when the order params are null', async () => {
+      const createdAt = new Date()
+      const entities: UserEntity[] = []
+      const arrange = Array(16).fill(UserDataBuilder({}))
+
+      arrange.forEach((element, index) => {
+        entities.push(
+          new UserEntity({
+            ...element,
+            name: `User ${index}`,
+            email: `teste${index}@mail.com`,
+            createdAt: new Date(createdAt.getTime() + index),
+          }),
+        )
+      })
+
+      await prismaService.user.createMany({
+        data: entities.map(item => item.toJSON()),
+      })
+
+      const searchOutput = await sut.search(new UserRepository.SearchParams())
+
+      expect(searchOutput).toBeInstanceOf(UserRepository.SearchResult)
+      expect(searchOutput.total).toBe(16)
+      searchOutput.items.forEach(item => {
+        expect(item).toBeInstanceOf(UserEntity)
+      })
+    })
   })
 })
