@@ -98,7 +98,7 @@ describe('Update Password Integration test', () => {
       }),
     ).rejects.toThrow(new InvalidPasswordError(`Old password does not match`))
   })
-  it('Should be update Passowrd', async () => {
+  it('Should be update Password', async () => {
     const oldPassword = await hashProvider.generateHash('1234')
     const entity = new UserEntity(UserDataBuilder({ password: oldPassword }))
     await prismaService.user.create({
